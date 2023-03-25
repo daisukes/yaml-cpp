@@ -151,6 +151,43 @@ produces
 - *fred
 ```
 
+Floating point precision can be changed
+
+```cpp
+YAML::Emitter out;
+out << BeginSeq;
+out << FloatPrecision(3) << 1.234f;
+out << DoublePrecision(6) << 3.14159265;
+out << Precision(3) << 1.0;   // both float and double
+out << EndSeq;
+```
+
+produces
+```yaml
+- 1.23
+- 3.14159
+- 1                           # does not output floating point zero
+```
+
+also precision can be fixed
+
+```cpp
+YAML::Emitter out;
+out << BeginSeq;
+out << FloatPrecision(3) << Fixed() << 1.234f;
+out << DoublePrecision(6) << Fixed() << 3.14159265;
+out << Precision(3) << Fixed() << 1.0;   // both float and double
+out << EndSeq;
+```
+
+produces
+```yaml
+- 1.234
+- 3.141593
+- 1.000                       # output floating point zeros as well
+```
+
+
 # STL Containers, and Other Overloads #
 We overload `operator <<` for `std::vector`, `std::list`, and `std::map`, so you can write stuff like:
 

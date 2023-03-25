@@ -134,11 +134,19 @@ struct _Precision {
   int doublePrecision;
 };
 
+struct _Fixed {
+  _Fixed(bool fixed_=true)
+      : fixed(fixed_) {}
+
+  bool fixed;
+};
+
 inline _Precision FloatPrecision(int n) { return _Precision(n, -1); }
 
 inline _Precision DoublePrecision(int n) { return _Precision(-1, n); }
 
 inline _Precision Precision(int n) { return _Precision(n, n); }
-}
 
+inline _Fixed Fixed(bool fixed=true) { return _Fixed(fixed); }
+}
 #endif  // EMITTERMANIP_H_62B23520_7C8E_11DE_8A39_0800200C9A66

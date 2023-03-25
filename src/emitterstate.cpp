@@ -23,6 +23,7 @@ EmitterState::EmitterState()
       m_mapKeyFmt(Auto),
       m_floatPrecision(std::numeric_limits<float>::max_digits10),
       m_doublePrecision(std::numeric_limits<double>::max_digits10),
+      m_precisionFixed(false),
       //
       m_modifiedSettings{},
       m_globalModifiedSettings{},
@@ -395,6 +396,12 @@ bool EmitterState::SetDoublePrecision(std::size_t value,
   if (value > std::numeric_limits<double>::max_digits10)
     return false;
   _Set(m_doublePrecision, value, scope);
+  return true;
+}
+
+bool EmitterState::SetFixed(bool value,
+                            FmtScope::value scope) {
+  _Set(m_precisionFixed, value, scope);
   return true;
 }
 }  // namespace YAML

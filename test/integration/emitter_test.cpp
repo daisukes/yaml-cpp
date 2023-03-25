@@ -1330,6 +1330,26 @@ TEST_F(EmitterTest, SetPrecision) {
   ExpectEmit("- 1.31\n- 1.23456");
 }
 
+TEST_F(EmitterTest, SetPrecisionFixed) {
+  out << BeginSeq;
+  out << FloatPrecision(3) << Fixed() << 1.234f;
+  out << DoublePrecision(6) << Fixed() << 3.14159265;
+  out << Precision(3) << Fixed() << 1.0;
+  out << EndSeq;
+  ExpectEmit("- 1.234\n- 3.141593\n- 1.000");
+}
+
+TEST_F(EmitterTest, SetPrecisionFixedGlobal) {
+  out.SetFloatPrecision(3);
+  out.SetDoublePrecision(6);
+  out.SetFixed(true);
+  out << BeginSeq;
+  out << 1.0f;
+  out << 1.0;
+  out << EndSeq;
+  ExpectEmit("- 1.000\n- 1.000000");
+}
+
 TEST_F(EmitterTest, DashInBlockContext) {
   out << BeginMap;
   out << Key << "key" << Value << "-";

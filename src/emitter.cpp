@@ -90,6 +90,10 @@ bool Emitter::SetDoublePrecision(std::size_t n) {
   return m_pState->SetDoublePrecision(n, FmtScope::Global);
 }
 
+bool Emitter::SetFixed(bool fixed) {
+  return m_pState->SetFixed(fixed, FmtScope::Global);
+}
+
 void Emitter::RestoreGlobalModifiedSettings() {
   m_pState->RestoreGlobalModifiedSettings();
 }
@@ -146,6 +150,11 @@ Emitter& Emitter::SetLocalPrecision(const _Precision& precision) {
     m_pState->SetFloatPrecision(precision.floatPrecision, FmtScope::Local);
   if (precision.doublePrecision >= 0)
     m_pState->SetDoublePrecision(precision.doublePrecision, FmtScope::Local);
+  return *this;
+}
+
+Emitter& Emitter::SetLocalFixed(const _Fixed& fixed) {
+  m_pState->SetFixed(fixed.fixed, FmtScope::Local);
   return *this;
 }
 
@@ -757,6 +766,10 @@ std::size_t Emitter::GetFloatPrecision() const {
 
 std::size_t Emitter::GetDoublePrecision() const {
   return m_pState->GetDoublePrecision();
+}
+
+bool Emitter::GetFixed() const {
+  return m_pState->GetFixed();
 }
 
 const char* Emitter::ComputeFullBoolName(bool b) const {

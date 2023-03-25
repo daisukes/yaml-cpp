@@ -59,12 +59,14 @@ class YAML_CPP_API Emitter {
   bool SetPostCommentIndent(std::size_t n);
   bool SetFloatPrecision(std::size_t n);
   bool SetDoublePrecision(std::size_t n);
+  bool SetFixed(bool fixed);
   void RestoreGlobalModifiedSettings();
 
   // local setters
   Emitter& SetLocalValue(EMITTER_MANIP value);
   Emitter& SetLocalIndent(const _Indent& indent);
   Emitter& SetLocalPrecision(const _Precision& precision);
+  Emitter& SetLocalFixed(const _Fixed& fixed);
 
   // overloads of write
   Emitter& Write(const std::string& str);
@@ -88,6 +90,7 @@ class YAML_CPP_API Emitter {
   void SetStreamablePrecision(std::stringstream&) {}
   std::size_t GetFloatPrecision() const;
   std::size_t GetDoublePrecision() const;
+  bool GetFixed() const;
 
   void PrepareIntegralStream(std::stringstream& stream) const;
   void StartedScalar();
@@ -190,11 +193,17 @@ inline Emitter& Emitter::WriteStreamable(T value) {
 template <>
 inline void Emitter::SetStreamablePrecision<float>(std::stringstream& stream) {
   stream.precision(static_cast<std::streamsize>(GetFloatPrecision()));
+  if (GetFixed()) {
+    stream << std::fixed;
+  }
 }
 
 template <>
 inline void Emitter::SetStreamablePrecision<double>(std::stringstream& stream) {
   stream.precision(static_cast<std::streamsize>(GetDoublePrecision()));
+  if (GetFixed()) {
+    stream << std::fixed;
+  }
 }
 
 // overloads of insertion
@@ -275,6 +284,10 @@ inline Emitter& operator<<(Emitter& emitter, _Indent indent) {
 
 inline Emitter& operator<<(Emitter& emitter, _Precision precision) {
   return emitter.SetLocalPrecision(precision);
+}
+
+inline Emitter& operator<<(Emitter& emitter, _Fixed fixed) {
+  return emitter.SetLocalFixed(fixed);
 }
 }  // namespace YAML
 
